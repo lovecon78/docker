@@ -1,0 +1,33 @@
+version: "3.8"
+services:
+ blue-centos7-docker:
+    build: /dockerfile/blue-centos7-docker-test
+    ports:
+      - "20022:22"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+
+
+
+      Deployment error
+The Compose file '/data/compose/6/docker-compose.yml' is invalid because: services.test.volumes contains an invalid type, it should be an array services.test.ports contains an invalid type, it should be an array
+Deployment error
+The Compose file '/data/compose/8/docker-compose.yml' is invalid because: services.test.volumes contains an invalid type, it should be an array
+
+Deployment error
+build path /volume1/docker/docker/blue-centos7-docker-test either does not exist, is not accessible, or is not a valid URL.
+
+
+http://git.bluewindsky.com:31000/loveconx/docker.git
+
+
+
+
+version: "3.9"
+services:
+ blue-centos7-docker:
+    build: /dockerfile/test
+    ports:
+      - "20022:22"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"

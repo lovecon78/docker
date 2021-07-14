@@ -1,0 +1,15 @@
+docker run -d -p 9000:9000 --name=portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v /volume1/docker/portainer-ce:/data -v /volume1/docker/docker:/dockerfile portainer/portainer-ce
+
+
+
+docker run -d --name=blue-centos7-docker1 --restart=always -v /var/run/docker.sock:/var/run/docker.sock blue-centos7-docker
+
+
+docker run --name=docker11 --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v /volume1/docker/portainer:/data blue-centos7-docker
+
+
+docker run -d --name=blue-centos7-docker2 --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v /volume1/docker/docker:/data blue-centos7-docker
+
+
+
+docker run -d --name=test1 --restart=always -v /var/run/docker.sock:/var/run/docker.sock blue-centos7-docker
