@@ -1,11 +1,15 @@
 version: "3.9"
 services:
   blue-centos7-systemd-sshd:
+    cap_add:
+    - SYS_ADMIN
+    environment:
+    - container=docker
     build: /dockerfile/blue-centos7-systemd-sshd
     ports:
       - "20022:22"
     volumes:
-      - "/sys/fs/cgroup:/sys/fs/cgroup"
+      - "/sys/fs/cgroup:/sys/fs/cgroup:ro"
 
   blue-centos7-systemd-docker:
     build: /dockerfile/blue-centos7-systemd-docker
