@@ -1,3 +1,5 @@
+# docker run -d --name=cetos7-systemd-docker --restart=always --cap-add=SYS_ADMIN -p 20022:22 -v /etc/localtime:/etc/localtime:ro -v /sys/fs/cgroup:/sys/fs/cgroup:ro -v /var/run/docker.sock:/var/run/docker.sock -e container=docker blue-centos7-systemd-docker:latest /usr/sbin/init
+
 version: "3.9"
 services:
   blue-centos7-systemd-docker:
@@ -7,7 +9,7 @@ services:
       - container=docker
     build: /dockerfile/blue-centos7-systemd-docker
     ports:
-      - 20122:22
+      - 20022:22
     privileged: false
     tmpfs:
       - /run
@@ -16,4 +18,4 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
-      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /var/run/docker.sock:/var/run/docker.sock
