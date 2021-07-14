@@ -1,3 +1,0 @@
-FROM blue-centos7-sshd:latest
-MAINTAINER lovecon78@hanmail.net
-LABEL "OS Version"="Centos 7"
