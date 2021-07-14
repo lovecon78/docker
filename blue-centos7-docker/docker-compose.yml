@@ -1,7 +1,7 @@
 version: "3.9"
 services:
  blue-centos7-docker:
-    build: ./dockerfile/
+    build: blue-centos7-docker/dockerfile/
     ports:
       - "20022:22"
     volumes:
