@@ -7,7 +7,7 @@ services:
       - container=docker
     build: /dockerfile/blue-centos7-systemd-docker
     ports:
-      - "20022:22"
+      - "20122:22"
     privileged: false
     tmpfs:
       - /run
