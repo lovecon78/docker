@@ -5,7 +5,7 @@ services:
     ports:
       - "20022:22"
     volumes:
-      - "/sys/fs/cgroup:/sys/fs/cgroup:ro"
+      - "/sys/fs/cgroup:/sys/fs/cgroup"
 
   blue-centos7-systemd-docker:
     build: /dockerfile/blue-centos7-systemd-docker
