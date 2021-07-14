@@ -1,0 +1,18 @@
+version: "3.9"
+services:
+  blue-centos7-systemd-sshd:
+    cap_add:
+      - SYS_ADMIN
+    environment:
+      - container=docker
+    build: /dockerfile/blue-centos7-systemd-sshd
+    ports:
+      - 20122:22
+    privileged: false
+    tmpfs:
+      - /run
+      - /run/lock
+      - /tmp
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
