@@ -1,0 +1,192 @@
+version: "3"
+services:
+
+
+# === portainer services ===
+  portainer:
+    container_name: portainer
+    image: portainer/portainer-ce:latest
+    command: -H unix:///var/run/docker.sock
+    restart: always
+    ports:
+      - 9000:9000
+      - 8000:8000
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
+
+
+# === onlyoffice services ===
+  onlyoffice:
+    container_name: onlyoffice
+    image: onlyoffice/documentserver:5.4.2.46
+    stdin_open: true
+    tty: true
+    restart: always
+    ports:
+      - 5090:80
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /docker_data/onlyoffice/logs:/var/log/onlyoffice
+      - /docker_data/onlyoffice/truetype:/usr/share/fonts/truetype
+      - /docker_data/onlyoffice/truetype:/var/www/onlyoffice/documentserver/core-fonts
+      - /docker_data/onlyoffice/dictionaries:/var/www/onlyoffice/documentserver/server/SpellChecker/dictionaries
+    command:
+      - supervisorctl restart ds:spellchecker
+
+
+# === nextcloud  ===
+  nextcloud:
+    image: nextcloud:latest
+    container_name: nextcloud
+    environment:
+      - SMTP_HOST=smtp.gmail.com
+      - SMTP_PORT=465
+      - SMTP_SECURE=ssl
+      - SMTP_NAME=smtp4totoli@gmail.com
+      - SMTP_PASSWORD=es9515!@
+      - SMTP_AUTHTYPE=LOGIN
+      - MAIL_DOMAIN=gmail.com
+#      - REDIS_HOST=localhost
+#      - REDIS_HOST_PORT=6378
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /docker_data/nextcloud/html:/var/www/html:rw
+      - /docker_data/nextcloud/data:/var/www/data:rw
+    restart: "no"
+    ports:
+      - 80:80
+
+
+# === solr services ===
+  solr:
+    container_name: solr
+    #image: solr:6
+    build: ./solr-custom
+    restart: "no"
+    ports:
+      - 8983:8983
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /docker_data/solr:/opt/solr/server/solr/mycores
+    environment:
+      SERVER_HOST: "0.0.0.0"
+      SOLR_JAVA_MEM: "-Xms1g -Xmx1g"
+
+
+# === minecraft server ===
+  minecraft:
+    image: itzg/minecraft-server
+    container_name: minecraft
+    restart: "no"
+    ports:
+      - 25565:25565
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /docker_data/minecraft:/data
+    environment:
+      EULA: "TRUE"
+      TYPE: BUKKIT
+    #restart: always
+
+
+# === redis server ===
+  redis:
+    container_name: redis
+    image: "redis:alpine"
+    restart: "no"
+    #command: redis-server --requirepass 요따가 패스워드
+    ports:
+     - "6377:6379"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /docker_data/redis:/var/lib/redis
+      - /docker_data/redis:/usr/local/etc/redis/redis.conf
+    environment:
+     - REDIS_REPLICATION_MODE=master
+
+
+# === wiki ===
+  wiki:
+    image: requarks/wiki 
+    container_name: wiki
+    restart: "no"
+    ports:
+      - 3000:3000
+#    links:
+#      - database
+#    volumes:
+#      - /docker_data/wiki:/
+    environment:
+      DB_TYPE: mariadb
+      DB_HOST: 10.0.2.2
+      DB_PORT: 3376
+      DB_USER: wiki 
+      DB_PASS: wiki!@
+      DB_NAME: wiki
+
+
+# === sql-server ===
+  mssql:
+    image: mcr.microsoft.com/mssql/server:latest
+    container_name: mssql
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_PID=Developer
+      - SA_PASSWORD=es5122!@
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - mssql_data:/var/opt/mssql
+    ports:
+      - "1433:1433"
+
+# === Oracle 11g xe ===
+  oracle11g:
+    image: jaspeen/oracle-xe-11g
+    container_name: ora11g
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /docker_data/oracle11gxe:/u01/app/oracle jaspeen/oracle-xe-11g
+    ports:
+      - 1521:1521
+
+
+# === Oracle 12c Enterprise ===
+# oracle12c:
+#   image: sath89/oracle-12c
+#   container_name: ora12c
+#   restart: "no"
+#   environment:
+#     - CHARACTER_SET=UTF-8
+#     - ORACLE_SID=orcl
+#     - ORACLE_PWD=orcl_01
+#     - ORACLE_MEM=3000
+#   volumes:
+#     - /etc/localtime:/etc/localtime:ro
+#     - /docker_data/oracle12cee:/ORCL
+#   ports:
+#     - 1521:1521
+
+
+# === maria db ===
+  maria:
+    image: mariadb
+    container_name: maria
+    restart: "no"
+    environment:
+      # @see https://phabricator.wikimedia.org/source/mediawiki/browse/master/includes/DefaultSettings.php
+      MYSQL_DATABASE: testdb
+      MYSQL_USER: testuser
+      MYSQL_PASSWORD: test_01
+      MYSQL_RANDOM_ROOT_PASSWORD: 'yes'
+    volumes:
+      - maria_data:/var/lib/mysql
+    ports:
+      - 3306:3306
+
+
+volumes:
+  portainer_data:
+  mssql_data:
+  maria_data:  

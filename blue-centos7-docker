@@ -1,0 +1,36 @@
+FROM centos:7
+MAINTAINER lovecon78@hanmail.net
+LABEL "OS Version"="Centos 7"
+#blue-centos7-docker:latest
+
+RUN yum -y update; \
+    yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo; \
+    yum -y install \
+    sudo \
+    vim \
+    net-tools \
+    curl \
+    openssh-server \
+    docker-ce-cli
+
+#root 암호 변경
+RUN echo 'gkskfh^^66' | passwd --stdin root
+
+#사용자(loveconx) 추가
+RUN useradd -m -s /bin/bash loveconx
+RUN echo 'gkskfh^^66' | passwd --stdin loveconx
+
+#SSH ROOT 로그인 차단
+#RUN sed -i 's/PermitRootLogin no/PermitRootLogin no/' /etc/ssh/sshd_config
+#RUN sudo systemctl restart sshd
+
+#docker 서비스 등록
+#RUN sudo systemctl enable docker.service
+#RUN sudo systemctl start docker.service
+
+#SSH 접속포트 설정
+EXPOSE 22
+
+VOLUME ["/var/run/docker.sock"]
+#VOLUME ["/sys/fs/cgroup"]
+#CMD ["/sbin/init"]
